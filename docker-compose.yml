@@ -1,0 +1,20 @@
+version: '2'
+services:
+    app:
+        build: .
+        command: npm test -- --timeout 30000
+        environment:
+            LOG_QUERIES: 'true'
+        ports:
+            - '8080:8080'
+        links:
+            - mysql:mysql
+        volumes:
+            - .:/home/app/src
+    mysql:
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: 'password'
+            MYSQL_DATABASE: 'test'
+            MYSQL_USER: 'bob'
+            MYSQL_PASSWORD: 'password'
