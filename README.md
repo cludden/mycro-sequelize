@@ -114,6 +114,23 @@ module.exports = function(mycro) {
 }
 ```
 
+## Assocations
+Currently, associations must be defined separately from this hook. You can easily accomplish this by defining your own hook and including it in the hook config.
+```javascript
+// in hooks/associations.js
+
+module.exports = function(done) {
+    const models = this.models;
+    const Users = models.user;
+    const Groups = models.groups;
+
+    Users.belongsToMany(Groups, {as: 'groups', through: 'user_groups', foreignKey: 'userId'});
+    Groups.belongsToMany(Users, {as: 'users', through: 'user_groups', foreignKey: 'groupId'});
+
+    process.nextTick(done);
+}
+```
+
 ## Testing
 1. Make sure you have an up to date docker toolkit installed
 2. Build the container
